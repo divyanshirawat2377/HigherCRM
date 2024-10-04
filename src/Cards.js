@@ -245,6 +245,11 @@ const cardData = [
         icon: <i className="fas fa-cogs"></i>,
         image: 'path-to-asset-management-image.jpg'
     },
+    {
+        title: 'UCS',
+        icon: <i className="fas fa-chart-line"></i>,
+        image: 'path-to-ucs-image.jpg'
+    },
 
 ];
 
@@ -254,7 +259,7 @@ const CardPage = () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
     const [availableBtn, setAvailableBtn] = useState();
-    const cardTitles = ['CRM', 'HRMS', 'ASM'];
+    const cardTitles = ['CRM', 'HRMS', 'ASM','UCS'];
 
     useEffect(() => {
         const getUserAccessibleCard = async () => {
@@ -344,6 +349,7 @@ const CardPage = () => {
             case "CRM": return "CRM"
             case "ASM": return "Asset Management"
             case "HRMS": return "HRMS"
+            case "UCS": return "UCS"
             default: return "None"
         }
     }
@@ -353,6 +359,7 @@ const CardPage = () => {
             case "CRM": return "Profile"
             case "HRMS": return "Cards1"
             case "ASM": return "Asset Management"
+            case "UCS": return "UCS"
             default: return null
         }
     }
@@ -368,7 +375,7 @@ const CardPage = () => {
     };
 
     return (
-        <div className="p-6">
+        <div className="p-6 bg-white min-h-screen">
             {/*************************  Header Start  ******************************/}
             <div className="bg-custome-blue rounded-lg w-full p-3 flex justify-between items-center shadow-lg">
                 <h1 className="text-white text-3xl font-bold">
