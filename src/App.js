@@ -3,10 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 
 
 import AdminSidebar from "./Sidebar/AdminSidebar";
-import Deptsidebar from './Sidebar/Deptsidebar';
+import HRMSidebar from './Sidebar/HRMSidebar';
 import UserSidebar from "./Sidebar/UserSidebar";
 import Sidebar from './Sidebar/Sidebar';
-import LocSidebar from './Sidebar/LocSidebar';
 
 
 
@@ -21,6 +20,8 @@ import Departments from "./Departments";
 import Location from "./Location";
 import Cards from "./Cards";
 import Cards1 from "./Cards1";
+import UCS from "./UCS";
+import HRMS from "./HRMS";
 import Usermng from "./Usermng";
 import DynamicForm from './DynamicForm';
 
@@ -36,8 +37,7 @@ function App() {
         
         <Route path='/Adminsidebar' element={<AdminSidebar />} />
         <Route path='/UserSidebar' element={<UserSidebar />} />
-        <Route path='/Deptsidebar' element={<Deptsidebar/>}/>
-        <Route path='/LocSidebar' element={<LocSidebar />} /> 
+        <Route path='/HRMSidebar' element={<HRMSidebar/>}/>
         <Route path='/Sidebar' element={<Sidebar />} /> 
 
 
@@ -47,9 +47,11 @@ function App() {
         <Route path='/Departments' element={<Departments />} />
         <Route path='/Location' element={<Location/>} />
         <Route path='/Cards' element={<Cards />} />
+        <Route path='/HRMS' element={<HRMS/>} />
         <Route path='/Cards1' element={<Cards1 />} />
         <Route path='/Usermng' element={<Usermng />} /> 
         <Route path='/DynamicForm' element={<DynamicForm />} />
+        <Route path='/UCS' element={<UCS />} />
       </Routes>
     </div>
   );
