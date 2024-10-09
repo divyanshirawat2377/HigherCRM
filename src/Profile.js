@@ -80,7 +80,7 @@
 //             return;
 //         }
 //         try {
-//             const response = await axios.post('https://highersystem.onrender.com/verify-token', {
+//             const response = await axios.post('http://43.204.140.118:3001/verify-token', {
 //                 token: token
 //             });
 //             console.log('Token is valid:', response.data);
@@ -96,7 +96,7 @@
 //     useEffect(() => {
 //         const fetchUserData = async () => {
 //             try {
-//                 const response = await axios.get(`https://highersystem.onrender.com/users`, {
+//                 const response = await axios.get(`http://43.204.140.118:3001/users`, {
 //                     headers: {
 //                         Authorization: `Bearer ${token}`,
 //                     },
@@ -139,7 +139,7 @@
 //         }
 //         try {
 //             console.log('➕', token)
-//             const response = await fetch('https://highersystem.onrender.com/all-customers', {
+//             const response = await fetch('http://43.204.140.118:3001/customers', {
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`,
 //                 },
@@ -169,7 +169,7 @@
 //                 return;
 //             }
 //             try {
-//                 const response = await fetch(`https://highersystem.onrender.com/all-contacts`, {
+//                 const response = await fetch(`http://43.204.140.118:3001/contacts`, {
 //                     headers: {
 //                         'authorization': `Bearer ${token}`,
 //                     },
@@ -255,7 +255,7 @@
 //     //             gst_number: newCustomer.gst_number,
 //     //             pan_no: newCustomer.pan_no,
 //     //         };
-//     //         const response = await fetch('https://highersystem.onrender.com/customers', {
+//     //         const response = await fetch('http://43.204.140.118:3001/customers', {
 //     //             method: 'POST',
 //     //             headers: {
 //     //                 'Authorization': `Bearer ${token}`,
@@ -319,7 +319,7 @@
 //                 gst_number: newCustomer.gst_number,
 //                 pan_no: newCustomer.pan_no,
 //             };
-//             const response = await fetch('https://highersystem.onrender.com/customers', {
+//             const response = await fetch('http://43.204.140.118:3001/customers', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`,
@@ -378,7 +378,7 @@
 //                 alert('Token does not exist.')
 //                 return;
 //             }
-//             const response = await fetch('https://highersystem.onrender.com/contacts', {
+//             const response = await fetch('http://43.204.140.118:3001/contacts', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json',
@@ -438,7 +438,7 @@
 //                 alert('Token does not exist.');
 //                 return;
 //             }
-//             const url = `https://highersystem.onrender.com/contacts/${contactId}`;
+//             const url = `http://43.204.140.118:3001/contacts/${contactId}`;
 //             const response = await fetch(url, {
 //                 method: 'DELETE',
 //                 headers: {
@@ -498,7 +498,7 @@
 //                 alert('Token does not exist.');
 //                 return;
 //             }
-//             const response = await fetch(`https://highersystem.onrender.com/customers/${customerId}`, {
+//             const response = await fetch(`http://43.204.140.118:3001/customers/${customerId}`, {
 //                 method: 'PUT',
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`,
@@ -555,7 +555,7 @@
 //     //             return;
 //     //         }
 
-//     //         const response = await axios.delete(`https://highersystem.onrender.com/customers/${customerId}`, {
+//     //         const response = await axios.delete(`http://43.204.140.118:3001/customers/${customerId}`, {
 //     //             headers: {
 //     //                 'Content-Type': 'application/json',
 //     //                 'authorization': `Bearer ${token}`,
@@ -581,7 +581,7 @@
 //                 setDeleteErrorMessage('Token does not exist.');
 //                 return;
 //             }
-//             const response = await axios.delete(`https://highersystem.onrender.com/customers/${customerId}`, {
+//             const response = await axios.delete(`http://43.204.140.118:3001/customers/${customerId}`, {
 //                 headers: {
 //                     'Content-Type': 'application/json',
 //                     'authorization': `Bearer ${token}`,
@@ -647,7 +647,7 @@
 //                 return;
 //             }
 
-//             const response = await fetch(`https://highersystem.onrender.com/contacts/${contactId}`, {
+//             const response = await fetch(`http://43.204.140.118:3001/contacts/${contactId}`, {
 //                 method: 'PUT',
 //                 headers: {
 //                     'Content-Type': 'application/json',
@@ -700,7 +700,7 @@
 //             try {
 //                 let user_id = localStorage.getItem('userId');
 //                 setUserId(user_id);
-//                 const response = await axios.get('https://highersystem.onrender.com/access', {
+//                 const response = await axios.get('http://43.204.140.118:3001/access', {
 //                     headers: {
 //                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
 //                     },
@@ -1813,6 +1813,17 @@
 
 
 
+// http://43.204.140.118:3001/verify-token
+// http://43.204.140.118:3001/users/id_user/${userId}
+// http://43.204.140.118:3001/customers
+// http://43.204.140.118:3001/contacts
+// http://43.204.140.118:3001/customers
+// http://43.204.140.118:3001/contacts
+// http://43.204.140.118:3001/contacts/${contactId}
+// http://43.204.140.118:3001/customers/${customerId}
+// http://43.204.140.118:3001/customers/${customerId}
+// http://43.204.140.118:3001/contacts/${contactId}
+// http://43.204.140.118:3001/access
 
 /*********************NEW CODE*************************** */
 import React, { useState, useEffect } from 'react';
@@ -1895,7 +1906,7 @@ const Profile = () => {
             return;
         }
         try {
-            const response = await axios.post('https://highersystem.onrender.com/verify-token', {
+            const response = await axios.post('http://43.204.140.118:3001/verify-token', {
                 token: token
             });
             console.log('Token is valid:', response.data);
@@ -1913,7 +1924,7 @@ const Profile = () => {
         if (userId) {
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get(`https://highersystem.onrender.com/id_user/${userId}`, {
+                    const response = await axios.get(`http://43.204.140.118:3001/users/id_user/${userId}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -1956,7 +1967,7 @@ const Profile = () => {
         }
         try {
             console.log('➕', token)
-            const response = await fetch('https://highersystem.onrender.com/all-customers', {
+            const response = await fetch('http://43.204.140.118:3001/customers', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -1986,7 +1997,7 @@ const Profile = () => {
                 return;
             }
             try {
-                const response = await fetch(`https://highersystem.onrender.com/all-contacts`, {
+                const response = await fetch(`http://43.204.140.118:3001/contacts`, {
                     headers: {
                         'authorization': `Bearer ${token}`,
                     },
@@ -2072,7 +2083,7 @@ const Profile = () => {
                 gst_number: newCustomer.gst_number,
                 pan_no: newCustomer.pan_no,
             };
-            const response = await fetch('https://highersystem.onrender.com/customers', {
+            const response = await fetch('http://43.204.140.118:3001/customers', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -2131,7 +2142,7 @@ const Profile = () => {
                 alert('Token does not exist.')
                 return;
             }
-            const response = await fetch('https://highersystem.onrender.com/contacts', {
+            const response = await fetch('http://43.204.140.118:3001/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2191,7 +2202,7 @@ const Profile = () => {
                 alert('Token does not exist.');
                 return;
             }
-            const url = `https://highersystem.onrender.com/contacts/${contactId}`;
+            const url = `http://43.204.140.118:3001/contacts/${contactId}`;
             const response = await fetch(url, {
                 method: 'DELETE',
                 headers: {
@@ -2251,7 +2262,7 @@ const Profile = () => {
                 alert('Token does not exist.');
                 return;
             }
-            const response = await fetch(`https://highersystem.onrender.com/customers/${customerId}`, {
+            const response = await fetch(`http://43.204.140.118:3001/customers/${customerId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -2308,7 +2319,7 @@ const Profile = () => {
     //             return;
     //         }
 
-    //         const response = await axios.delete(`https://highersystem.onrender.com/customers/${customerId}`, {
+    //         const response = await axios.delete(`http://43.204.140.118:3001/customers/${customerId}`, {
     //             headers: {
     //                 'Content-Type': 'application/json',
     //                 'authorization': `Bearer ${token}`,
@@ -2334,7 +2345,7 @@ const Profile = () => {
                 setDeleteErrorMessage('Token does not exist.');
                 return;
             }
-            const response = await axios.delete(`https://highersystem.onrender.com/customers/${customerId}`, {
+            const response = await axios.delete(`http://43.204.140.118:3001/customers/${customerId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': `Bearer ${token}`,
@@ -2400,7 +2411,7 @@ const Profile = () => {
                 return;
             }
 
-            const response = await fetch(`https://highersystem.onrender.com/contacts/${contactId}`, {
+            const response = await fetch(`http://43.204.140.118:3001/contacts/${contactId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2453,7 +2464,7 @@ const Profile = () => {
             try {
                 let user_id = localStorage.getItem('userId');
                 setUserId(user_id);
-                const response = await axios.get('https://highersystem.onrender.com/access', {
+                const response = await axios.get('http://43.204.140.118:3001/access', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     },
@@ -2537,7 +2548,7 @@ const Profile = () => {
                     {hasAMSAccess && (
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="bg-custome-blue w-[17%] text-white px-4 py-2 rounded-2xl mb-4 mt-4 "
+                            className="bg-gray-700 w-[13%] text-white px-4 py-2 rounded-2xl mb-4 mt-4 "
                         >
                             Add Customer
                         </button>

@@ -11,7 +11,11 @@ const DynamicForm = () => {
 
   // Fetch the form fields from the backend when the component loads
   useEffect(() => {
-    axios.get('/form-fields')
+    axios.get('http://43.204.140.118:3001/form-fields', {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
       .then(response => {
         const fieldsData = response.data.map(field => ({
           id: field.id,
@@ -32,6 +36,12 @@ const DynamicForm = () => {
       setNewFields([...newFields, { ...newFieldInput, id: fields.length + newFields.length + 1 }]);
       setNewFieldInput({ name: '', type: 'string', value: '' }); // Reset the new field input
     }
+  };
+
+  // Function to delete a new field before submission
+  const handleDeleteField = (id) => {
+    const updatedNewFields = newFields.filter(field => field.id !== id);
+    setNewFields(updatedNewFields);
   };
 
   // Function to handle field changes for existing fields
@@ -74,19 +84,21 @@ const DynamicForm = () => {
       }
     });
 
-    // Add new fields to formData
+    // Add new fields to formData (optional values)
     newFields.forEach(field => {
-      if (field.type === 'number') {
-        formData[field.name] = Number(field.value);
-      } else if (field.type === 'boolean') {
-        formData[field.name] = field.value.toLowerCase() === 'true';
-      } else {
-        formData[field.name] = field.value;
+      if (field.value) {
+        if (field.type === 'number') {
+          formData[field.name] = Number(field.value);
+        } else if (field.type === 'boolean') {
+          formData[field.name] = field.value.toLowerCase() === 'true';
+        } else {
+          formData[field.name] = field.value;
+        }
       }
     });
 
     try {
-      const response = await axios.post('/submit', { formData, newFields });
+      const response = await axios.post('http://43.204.140.118:3001/submit', { formData, newFields });
       setFeedback('Form submitted successfully!');
       setFields([...fields, ...newFields]); // Update the fields state to include newly added fields
       setNewFields([]); // Reset new fields after submission
@@ -100,7 +112,46 @@ const DynamicForm = () => {
       <h2>Dynamic Form</h2>
 
       <form onSubmit={handleSubmit} className="form">
+        {/* Existing Fields */}
+        {fields.map((field) => (
+          <div key={field.id} className="field">
+            <label>{field.name}:</label>
+            <input
+              type={field.type === 'number' ? 'number' : field.type === 'boolean' ? 'text' : 'text'}
+              name="value"
+              value={field.value}
+              onChange={(e) => handleFieldChange(field.id, e)}
+              className="input-field"
+              placeholder={'Enter ${field.name}'}
+              required // Existing fields are mandatory
+            />
+          </div>
+        ))}
+
         {/* New Fields Section */}
+        {newFields.length > 0 && (
+          <div className="new-fields-list">
+            <h3>New Fields</h3>
+            {newFields.map((field) => (
+              <div key={field.id} className="field">
+                <label>{field.name}:</label>
+                <input
+                  type={field.type === 'number' ? 'number' : field.type === 'boolean' ? 'text' : 'text'}
+                  name="value"
+                  value={field.value || ''}
+                  onChange={(e) => handleNewFieldValueChange(field.id, e)}
+                  className="input-field"
+                  placeholder={'Enter ${field.name}'}
+                />
+                <button type="button" className="btn delete-field" onClick={() => handleDeleteField(field.id)}>
+                  Delete Field
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Add New Field Section */}
         <div className="new-field-container">
           <h3>Add New Fields</h3>
           <input
@@ -122,58 +173,22 @@ const DynamicForm = () => {
             <option value="number">Number</option>
             <option value="boolean">Boolean</option>
           </select>
+          {/* New Field Value Input */}
           <input
             type="text"
             name="value"
             value={newFieldInput.value}
             onChange={handleNewFieldInputChange}
             className="input-field"
-            placeholder="Field Value"
-            required
+            placeholder="Field Value (optional)"
           />
+        </div>
+
+        <div className="button-container">
           <button type="button" className="btn add-field" onClick={handleAddField}>
             Add Field
           </button>
-        </div>
 
-        {/* Display New Fields for Editing */}
-        {newFields.length > 0 && (
-          <div className="new-fields-list">
-            <h3>New Fields</h3>
-            {newFields.map((field) => (
-              <div key={field.id} className="field">
-                <label>{field.name}:</label>
-                <input
-                  type={field.type === 'number' ? 'number' : 'text'}
-                  name="value"
-                  value={field.value || ''}
-                  onChange={(e) => handleNewFieldValueChange(field.id, e)}
-                  className="input-field"
-                  placeholder={`Enter ${field.name}`}
-                  required
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Existing Fields */}
-        {fields.map((field) => (
-          <div key={field.id} className="field">
-            <label>{field.name}:</label>
-            <input
-              type={field.type === 'number' ? 'number' : 'text'}
-              name="value"
-              value={field.value}
-              onChange={(e) => handleFieldChange(field.id, e)}
-              className="input-field"
-              placeholder={`Enter ${field.name}`}
-              required
-            />
-          </div>
-        ))}
-
-        <div className="button-container">
           <button type="submit" className="btn submit-form">
             Submit Form
           </button>
@@ -188,4 +203,4 @@ const DynamicForm = () => {
   );
 };
 
-export default DynamicForm;
+export default DynamicForm;

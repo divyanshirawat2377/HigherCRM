@@ -17,7 +17,7 @@ const VerMsg = ({ open, onClose }) => {
 
   const handleOtpSubmit = async () => {
     try {
-      const res = await axios.post("https://highersystem.onrender.com/verify", {
+      const res = await axios.post("http://43.204.140.118:3001/verify", {
         emailVerificationCode: emailVerificationCode,
         smsVerificationCode: smsVerificationCode,
       });

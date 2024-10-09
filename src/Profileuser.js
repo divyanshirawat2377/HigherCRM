@@ -7,7 +7,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("https://highersystem.onrender.com/users");
+        const response = await axios.get("http://43.204.140.118:3001/users");
         const user = response.data; // Adjust this based on the API response structure
         setUserData(user);
       } catch (error) {

@@ -31,7 +31,7 @@
   
 //   const authenticateUser = async (email, password) => {
 //     try {
-//       const response = await axios.post("https://highersystem.onrender.com/login", {
+//       const response = await axios.post("http://43.204.140.118:3001/login", {
 //         email,
 //         password,
 //       });
@@ -176,7 +176,7 @@ const Login = () => {
     try {
       // Authenticate the user with the login API
       const loginResponse = await axios.post(
-        "https://highersystem.onrender.com/login",
+        "http://43.204.140.118:3001/login",
         {
           email,
           password,
@@ -187,7 +187,7 @@ const Login = () => {
       localStorage.setItem("userId", userId);
 
       // Fetch the list of all users from the API
-      const usersResponse = await axios.get("https://highersystem.onrender.com/users");
+      const usersResponse = await axios.get("http://43.204.140.118:3001/users");
       const users = usersResponse.data;
 
       // Check if the entered email exists in the list of users

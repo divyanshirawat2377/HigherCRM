@@ -55,7 +55,7 @@
 
 //     const handleDelete = async (user_id) => {
 //         try {
-//             const response = await fetch('https://highersystem.onrender.com/users', {
+//             const response = await fetch('http://43.204.140.118:3001/users', {
 //                 headers: {
 //                     'Content-Type': 'application/json',
 //                     Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@
 //             return;
 //         }
 //         try {
-//             const response = await axios.post('https://highersystem.onrender.com/verify-token', {
+//             const response = await axios.post('http://43.204.140.118:3001/verify-token', {
 //                 token: token
 //             });
 //             console.log('Token is valid:', response.data);
@@ -116,7 +116,7 @@
 
 //     const fetchDepartments = async () => {
 //         try {
-//             const response = await axios.get('https://highersystem.onrender.com/departments');
+//             const response = await axios.get('http://43.204.140.118:3001/departments');
 //             setDepartments(response.data);
 //         } catch (error) {
 //             console.error('Error fetching departments:', error);
@@ -126,7 +126,7 @@
 //     useEffect(() => {
 //         const fetchUserData = async () => {
 //             try {
-//                 const response = await axios.get(`https://highersystem.onrender.com/users`, {
+//                 const response = await axios.get(`http://43.204.140.118:3001/users`, {
 //                     headers: {
 //                         Authorization: `Bearer ${token}`,
 //                     },
@@ -144,7 +144,7 @@
 
 //     const fetchUsers = async () => {
 //         try {
-//             const response = await axios.get('https://highersystem.onrender.com/getusers');
+//             const response = await axios.get('http://43.204.140.118:3001/getusers');
 //             setUsers(response.data);
 //         } catch (error) {
 //             console.error('Error fetching users:', error);
@@ -205,7 +205,7 @@
 //                 // api_access: formData.api_access || [],
 //             };
 //             console.log('Sending payload:', payload);
-//             const response = await axios.post('https://highersystem.onrender.com/signup', payload);
+//             const response = await axios.post('http://43.204.140.118:3001/signup', payload);
 //             if (response.data.message === 'User registered successfully.') {
 //                 setNotification({ message: 'Registration successful.', color: 'green' });
 //                 setUsers((prevUsers) => [
@@ -611,13 +611,25 @@
 
 
 
+
+//http://43.204.140.118:3001/users
+//http://43.204.140.118:3001/verify-token
+//http://43.204.140.118:3001/departments
+//http://43.204.140.118:3001/loc
+//http://43.204.140.118:3001/users
+//http://43.204.140.118:3001/users/getusers
+//http://43.204.140.118:3001/signup
+
+
+/***************NEW CODE********************/
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaEye, FaEyeSlash, FaHome, FaSignOutAlt } from 'react-icons/fa';
-import Sidebar from './Sidebar/Sidebar';
+import Sidebar from './Sidebar/HRMSidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import excel from './assests/excel.png';
 import {
     validateFirstName,
     validateLastName,
@@ -626,11 +638,15 @@ import {
     validatePassword,
     validateRole
 } from './Components/validate';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const UserTable = () => {
     const [departments, setDepartments] = useState([]);
     const [locations, setLocations] = useState([]);
     const [users, setUsers] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [designations, setDesignations] = useState([]);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [notification, setNotification] = useState({ message: '', color: '' });
@@ -644,7 +660,7 @@ const UserTable = () => {
         last_name: null,
         phone_no: null,
         email: null,
-        password: null,
+        // password: null,
         dept_id: null,
         locality: null,
         role: null,
@@ -658,7 +674,7 @@ const UserTable = () => {
         last_name: '',
         phone_no: '',
         email: '',
-        password: '',
+        // password: '',
         locality: '',
         dept_id: '',
         dept_name: '',
@@ -671,7 +687,7 @@ const UserTable = () => {
 
     const handleDelete = async (user_id) => {
         try {
-            const response = await fetch('https://highersystem.onrender.com/users', {
+            const response = await fetch('http://43.204.140.118:3001/users', {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
@@ -698,7 +714,7 @@ const UserTable = () => {
             return;
         }
         try {
-            const response = await axios.post('https://highersystem.onrender.com/verify-token', {
+            const response = await axios.post('http://43.204.140.118:3001/verify-token', {
                 token: token
             });
             console.log('Token is valid:', response.data);
@@ -727,22 +743,42 @@ const UserTable = () => {
 
     useEffect(() => {
         fetchDepartments();
+        fetchRoles();
+        fetchDesignations();
         fetchLocation();
         fetchUsers();
     }, []);
 
     const fetchDepartments = async () => {
         try {
-            const response = await axios.get('https://highersystem.onrender.com/departments');
+            const response = await axios.get('http://43.204.140.118:3001/departments');
             setDepartments(response.data);
         } catch (error) {
             console.error('Error fetching departments:', error);
         }
     };
 
+    const fetchDesignations = async () => {
+        try {
+            const response = await axios.get('http://43.204.140.118:3001/designation');
+            setDesignations(response.data);
+        } catch (error) {
+            console.error('Error fetching designations:', error);
+        }
+    };
+
+    const fetchRoles = async () => {
+        try {
+            const response = await axios.get('http://43.204.140.118:3001/role');
+            setRoles(response.data);
+        } catch (error) {
+            console.error('Error fetching roles:', error);
+        }
+    };
+
     const fetchLocation = async () => {
         try {
-            const response = await axios.get('https://highersystem.onrender.com/loc');
+            const response = await axios.get('http://43.204.140.118:3001/loc');
             setLocations(response.data);
         } catch (error) {
             console.error('Error fetching locations:', error);
@@ -752,7 +788,7 @@ const UserTable = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`https://highersystem.onrender.com/users`, {
+                const response = await axios.get(`http://43.204.140.118:3001/users`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -768,32 +804,9 @@ const UserTable = () => {
         }
     }, [userId, token]);
 
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         try {
-    //             const response = await axios.get(`https://highersystem.onrender.com/users`, {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                 },
-    //             });
-    //             const user = response.data[0]; // Adjust this to your user data structure
-    //             setUserData(user);
-    //         } catch (error) {
-    //             console.error('Error fetching user data:', error);
-    //         }
-    //     };
-
-    //     // Get userId from localStorage
-    //     const userId = localStorage.getItem('userId');
-
-    //     if (userId) {
-    //         fetchUserData();
-    //     }
-    // }, [token]); // Remove userId from dependencies if it's static from localStorage
-
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('https://highersystem.onrender.com/getusers');
+            const response = await axios.get('http://43.204.140.118:3001/users/getusers');
             setUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -814,8 +827,8 @@ const UserTable = () => {
                         return validatePhone(value);
                     case 'email':
                         return validateEmail(value);
-                    case 'password':
-                        return validatePassword(value);
+                    // case 'password':
+                    //     return validatePassword(value);
                     case 'role':
                         return validateRole(value);
                     default:
@@ -831,7 +844,7 @@ const UserTable = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-
+        console.log(formData);
         if (!isFormValid()) {
             setNotification({ message: 'Please provide all required details.', color: 'red' });
             return;
@@ -840,31 +853,34 @@ const UserTable = () => {
         try {
             // Find the selected department and location
             const selectedDept = departments.find(dept => dept.dept_id === formData.dept_id);
+            const selectedRole = roles.find(role => role.role_id === formData.role_id);
+
             const selectedLocation = locations.find(location => location.location_id === formData.location_id); // Assuming `location_id` is the key for location
 
             // Extract department name and locality
             const dept_name = selectedDept ? selectedDept.dept_name : '';
+            const role_name = selectedRole ? selectedRole.role_name : '';
             const locality = selectedLocation ? selectedLocation.locality : '';
 
-            // Create the payload including locality
             const payload = {
                 first_name: formData.first_name,
                 last_name: formData.last_name,
                 phone_no: formData.phone_no,
                 email: formData.email,
-                password: formData.password,
+                // password: formData.password,
                 dept_name: dept_name,
                 role: formData.role,
-                location: locality, // Add locality to the location field
+                location: formData.location, // Add locality to the location field
                 dept_id: formData.dept_id,
                 emp_id: formData.emp_id,
                 user_status: formData.user_status,
+                role_id: formData.role_id,
                 // api_access: formData.api_access || [],
             };
 
             console.log('Sending payload:', payload);
 
-            const response = await axios.post('https://highersystem.onrender.com/signup', payload);
+            const response = await axios.post('http://43.204.140.118:3001/signup', payload);
 
             if (response.data.message === 'User registered successfully.') {
                 setNotification({ message: 'Registration successful.', color: 'green' });
@@ -905,7 +921,7 @@ const UserTable = () => {
             formData.last_name &&
             formData.phone_no &&
             formData.email &&
-            formData.password &&
+            // formData.password &&
             formData.dept_id &&
             formData.emp_id &&
             formData.user_status &&
@@ -935,6 +951,60 @@ const UserTable = () => {
         }));
     };
 
+    // const handleRoleChange = (e) => {
+    //     const selectedRoleId = parseInt(e.target.value, 10);
+    //     const selectedRole = roles.find(role => role.role_id === selectedRoleId);
+
+    //     setFormData({
+    //         ...formData,
+    //         role_id: selectedRoleId,
+    //         role_name: selectedRole ? selectedRole.role_name : '',
+    //     });
+
+    //     setFormErrors((prevErrors) => ({
+    //         ...prevErrors,
+    //         role_id: selectedRoleId ? null : 'Role is required.',
+    //     }));
+    // };
+
+    const handleRoleChange = (e) => {
+        const selectedRoleId = parseInt(e.target.value, 10); // Convert value to integer
+        const selectedRole = roles.find(role => role.role_id === selectedRoleId); // Find the selected role
+
+        console.log('Selected Role ID:', selectedRoleId);
+        console.log('Selected Role:', selectedRole);
+
+        setFormData({
+            ...formData,
+            role_id: selectedRoleId,
+            role_name: selectedRole ? selectedRole.role_name : 'Not assigned', // Set a default value if not found
+        });
+
+        setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            role_id: selectedRoleId ? null : 'Role is required.',
+        }));
+    };
+
+
+    const handleDesignationChange = (e) => {
+        const selectedDesignationId = parseInt(e.target.value, 10);
+        const selectedDesignation = designations.find(designation => designation.designation_id === selectedDesignationId);
+
+        setFormData({
+            ...formData,
+            designation_id: selectedDesignationId,
+            designation_name: selectedDesignation ? selectedDesignation.designation_name : '',
+        });
+
+        setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            designation_id: selectedDesignationId ? null : 'Designation is required.',
+        }));
+    };
+
+
+
     const handleLocationChange = (e) => {
         const selectedLocationId = parseInt(e.target.value, 10);
         const selectedLocation = locations.find(location => location.location_id === selectedLocationId);
@@ -942,7 +1012,7 @@ const UserTable = () => {
         setFormData({
             ...formData,
             location_id: selectedLocationId,
-            location: selectedLocation ? selectedLocation.locality : '', // Assuming locality is stored in the 'locality' field
+            location: selectedLocation ? selectedLocation.location : '', // Assuming locality is stored in the 'locality' field
         });
 
         setFormErrors((prevErrors) => ({
@@ -951,6 +1021,16 @@ const UserTable = () => {
         }));
     };
 
+    const handleDownloadExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(users);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'User Data');
+
+        // Create a buffer and save it as an Excel file
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        saveAs(data, 'User Data.xlsx');
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -963,7 +1043,7 @@ const UserTable = () => {
     };
 
     const handleHome = () => {
-        navigate('/Cards1');
+        navigate('/Cards');
     };
 
     const handleStatusChange = (e) => {
@@ -1008,12 +1088,20 @@ const UserTable = () => {
                     )}
                 </div>
                 {/*************************  Header End  ******************************/}
-                <button
-                    onClick={() => setIsAddModalOpen(true)}
-                    className="bg-custome-blue w-[17%] text-white px-4 py-2 rounded-2xl mb-4 mt-4 "
-                >
-                    Add User
-                </button>
+                <div className='justify-between flex'>
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="bg-gray-700 w-[13%] text-white px-4 py-2 rounded-2xl mb-4 mt-4 "
+                    >
+                        Add User
+                    </button>
+                    <button
+                        onClick={handleDownloadExcel}
+                        className="text-green-500 hover:text-green-500 items-center"
+                    >
+                        <img src={excel} alt="logo" className='mr-5 w-8 h-8' />
+                    </button>
+                </div>
 
                 {isAddModalOpen && (
                     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
@@ -1101,29 +1189,20 @@ const UserTable = () => {
                                 </div>
                                 {/* Password  and Location */}
                                 <div className="grid gap-4 mb-4 md:grid-cols-2">
-                                    <div>
-                                        <label htmlFor="password">
-                                            Password <span className="text-red-500">*</span>
+
+                                    <div >
+                                        <label htmlFor="emp_id">
+                                            Employee ID <span className="text-red-500">*</span>
                                         </label>
-                                        <div className="relative">
-                                            <input
-                                                id="password"
-                                                type={showPassword ? 'text' : 'password'}
-                                                value={formData.password}
-                                                onChange={handleInputChange}
-                                                className="w-full border border-gray-700 bg-gray-200 rounded-md p-2"
-                                                placeholder="Password"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={togglePasswordVisibility}
-                                                className="absolute right-3 top-3"
-                                            >
-                                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                            </button>
-                                        </div>
-                                        {formErrors.password && (
-                                            <span className="text-red-500">{formErrors.password}</span>
+                                        <input
+                                            id="emp_id"
+                                            value={formData.emp_id}
+                                            onChange={handleInputChange}
+                                            className="w-full border border-gray-700 bg-gray-200 rounded-md p-2"
+                                            placeholder="Employee ID"
+                                        />
+                                        {formErrors.emp_id && (
+                                            <span className="text-red-500">{formErrors.emp_id}</span>
                                         )}
                                     </div>
                                     <div>
@@ -1149,20 +1228,25 @@ const UserTable = () => {
                                 {/* Role and Department*/}
                                 <div className="grid gap-4 mb-4 md:grid-cols-2">
                                     <div>
-                                        <label htmlFor="role">
-                                            Role <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            id="role"
-                                            value={formData.role}
-                                            onChange={handleInputChange}
+                                        <label htmlFor="role_id">Role <span className="text-red-500">*</span></label>
+                                        <select
+                                            id="role_id"
+                                            value={formData.role_id} // Ensure this is linked to your formData state
+                                            onChange={handleRoleChange} // Ensure this function is correctly implemented
                                             className="w-full border border-gray-700 bg-gray-200 rounded-md p-2"
-                                            placeholder="Role"
-                                        />
-                                        {formErrors.role && (
-                                            <span className="text-red-500">{formErrors.role}</span>
+                                        >
+                                            <option value="">Select Role</option>
+                                            {roles.map((role) => ( // Ensure you're using the correct array for roles
+                                                <option key={role.role_id} value={role.role_id}>
+                                                    {role.role}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {formErrors.role_id && (
+                                            <span className="text-red-500">{formErrors.role_id}</span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label htmlFor="dept_id">Department <span className="text-red-500">*</span></label>
                                         <select
@@ -1183,10 +1267,31 @@ const UserTable = () => {
                                         )}
                                     </div>
                                 </div>
+                                <div className="grid gap-4 mb-4 md:grid-cols-2">
+                                    <div>
+                                        <label htmlFor="designation_id">Designation <span className="text-red-500">*</span></label>
+                                        <select
+                                            id="designation_id"
+                                            value={formData.designation_id}  // Change to designation_id
+                                            onChange={handleDesignationChange}
+                                            className="w-full border border-gray-700 bg-gray-200 rounded-md p-2"
+                                        >
+                                            <option value="">Select Designation</option>
+                                            {designations.map((designation) => (  // Ensure you're mapping over the designations array
+                                                <option key={designation.desig_id} value={designation.desig_id}>
+                                                    {designation.designation}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {formErrors.designation_id && (  // Check for errors in designation_id
+                                            <span className="text-red-500">{formErrors.designation_id}</span>
+                                        )}
+                                    </div>
+                                </div>
 
                                 {/* employee_id and status */}
                                 <div className="grid gap-4 mb-4 md:grid-cols-2">
-                                    <div >
+                                    {/* <div >
                                         <label htmlFor="emp_id">
                                             Employee ID <span className="text-red-500">*</span>
                                         </label>
@@ -1200,7 +1305,7 @@ const UserTable = () => {
                                         {formErrors.emp_id && (
                                             <span className="text-red-500">{formErrors.emp_id}</span>
                                         )}
-                                    </div>
+                                    </div> */}
                                     <div >
                                         <label htmlFor="user_status">
                                             User Status <span className="text-red-500">*</span>
@@ -1265,6 +1370,7 @@ const UserTable = () => {
                                 <th className="py-2 px-4">Phone Number</th>
                                 <th className="py-2 px-4">Email</th>
                                 <th className="py-2 px-4">Department</th>
+
                                 <th className="py-2 px-4">User Role</th>
                                 <th className="py-2 px-4">Location</th>
                                 <th className="py-2 px-4">User Status</th>
@@ -1285,6 +1391,7 @@ const UserTable = () => {
                                         <td className="py-2 px-4">{user.phone_no}</td>
                                         <td className="py-2 px-4">{user.email}</td>
                                         <td className="py-2 px-4">{user.dept_name}</td>
+
                                         <td className="px-4 py-2">{user.role}</td>
                                         <td className="py-2 px-4">{user.location}</td>
                                         <td className="py-2 px-4">{user.user_status}</td>

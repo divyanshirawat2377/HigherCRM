@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from './assests/Logo.png';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome } from 'react-icons/fa';
 import axios from 'axios';
 
 const Card = ({ title, icon, onClick }) => (
@@ -20,24 +20,34 @@ const Card = ({ title, icon, onClick }) => (
 
 const cardData = [
     {
-        title: 'Access Privileges',
-        icon: <i className="fas fa-lock"></i>,
-        image: 'Department'
-    },
-    {
-        title: 'User Management',
-        icon: <i className="fas fa-user"></i>,
-        image: 'path-to-user-management-image.jpg'
-    },
-    {
         title: 'Department',
         icon: <i className="fas fa-building"></i>,
         image: 'path-to-department-image.jpg'
     },
     {
-        title: 'Location',
+        title: 'Office Location',
         icon: <i className="fas fa-cogs"></i>,
         image: 'path-to-location-management-image.jpg'
+    },
+    {
+        title: 'Domain',
+        icon: <i className="fas fa-cogs"></i>,
+        image: 'path-to-location-management-image.jpg'
+    },
+    {
+        title:'Role',
+        icon: <i className="fas fa-user"></i>,
+        image: 'path-to-user-management-image.jpg'
+    },
+    {
+        title: 'Designation',
+        icon: <i className="fas fa-cogs"></i>,
+        image: 'path-to-location-management-image.jpg'
+    },
+    {
+        title: 'User Management',
+        icon: <i className="fas fa-user"></i>,
+        image: 'path-to-user-management-image.jpg'
     }
 ];
 
@@ -47,13 +57,13 @@ const CardPage = () => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
     const [availableBtn, setAvailableBtn] = useState();
-    const cardTitles = ['Dept', 'update_access', 'UM', 'Location'];
+    const cardTitles = ['Dept', 'Location', 'Designation', 'Domain','Role','UM'];
 
     useEffect(() => {
         const getUserAccessibleCard = async () => {
             try {
                 console.log(cardTitles, userId);
-                let response = await fetch("https://highersystem.onrender.com/verify-access", {
+                let response = await fetch("http://43.204.140.118:3001/access/verify-access", {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"
@@ -80,27 +90,28 @@ const CardPage = () => {
     }, [])
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get(`https://highersystem.onrender.com/id_user`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                const user = response.data[0];
-                setUserData(user);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
+        const userId = localStorage.getItem('userId');
         if (userId) {
+            const fetchUserData = async () => {
+                try {
+                    const response = await axios.get(`http://43.204.140.118:3001/users/id_user/${userId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    const user = response.data[0];
+                    setUserData(user);
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                }
+            };
             fetchUserData();
         }
-    }, [userId, token]);
+    }, [token, userId]);
 
     useEffect(() => {
         const handlePopState = () => {
-            navigate('/Cards');
+            navigate('/HRMS');
         };
         window.addEventListener('popstate', handlePopState);
         return () => {
@@ -114,7 +125,7 @@ const CardPage = () => {
             return;
         }
         try {
-            const response = await axios.post('https://highersystem.onrender.com/verify-token', {
+            const response = await axios.post('http://43.204.140.118:3001/verify-token', {
                 token: token
             });
             console.log('Token is valid:', response.data);
@@ -133,19 +144,23 @@ const CardPage = () => {
 
     const getTitle = (value) => {
         switch (value) {
-            case "update_access": return "Access Privileges"
             case "Dept": return "Department"
+            case "Location": return "Office Location"
+            case "Designation": return "Designation"
+            case "Domain": return "Domain"
+            case "Role": return "Role"
             case "UM": return "User Management"
-            case "Location": return "Location"
             default: return "None"
         }
     }
     const getPageName = (value) => {
         switch (value) {
-            case "update_access": return "AMS"
             case "Dept": return "Departments"
-            case "UM": return "Usermng"
             case "Location": return "Location"
+            case "Designation": return "Designation"
+            case "Domain": return "Domain"
+            case "Role": return "Role"
+            case "UM": return "Usermng"
             default: return null
         }
     }
@@ -161,35 +176,38 @@ const CardPage = () => {
     };
 
     const handleHome = () => {
-        navigate('/Cards');
+        navigate('Cards');
     };
 
     return (
-        <div className="p-6">
+        <div className="p-6 bg-white min-h-screen">
             {/*************************  Header Start  ******************************/}
             <div className="bg-custome-blue rounded-lg w-full p-3 flex justify-between items-center shadow-lg">
-                <h1 className="text-white text-3xl font-bold">
-                    <div>
-                        <img src={logo} alt="Logo" className="w-30 h-10" />
-                    </div>
-                </h1>
-                <h1 className="text-white text-3xl font-bold ml-[35%]">HRMS</h1>
+                <button
+                    onClick={handleHome}
+                    type="button"
+                    className="flex items-center p-2 rounded-full ">
+                    <FaHome className="text-white mr-2" size={25} />
+                </button>
+                <h1 className="text-white text-2xl font-bold">Organization Set Up</h1>
                 {userData && (
-                    <div className="bg-white rounded-3xl p-2 flex ml-[30%]">
-                        <div className="flex flex-col">
-                            <h3 className="text-lg font-semibold text-black">
-                                {userData.first_name} {userData.last_name}
-                            </h3>
+                    <div className="ml-auto flex items-center gap-4">
+                        <div className="bg-white rounded-3xl p-2 flex items-center">
+                            <div className="flex flex-col">
+                                <h3 className="text-lg font-semibold text-custome-black">
+                                    {userData.first_name} {userData.last_name}
+                                </h3>
+                            </div>
                         </div>
+                        <button
+                            onClick={handleLogout}
+                            type="button"
+                            className="bg-white flex items-center p-2 rounded-full ">
+                            <FaSignOutAlt className="text-black mr-2" size={20} />
+                            <span className="text-black font-semibold"></span>
+                        </button>
                     </div>
                 )}
-                <button
-                    onClick={handleLogout}
-                    type="button"
-                    className="bg-white flex items-center p-3 rounded-full ">
-                    <FaSignOutAlt className="text-black mr-2" size={30} />
-                    <span className="text-black font-semibold"></span>
-                </button>
             </div>
             {/*************************  Header End  ******************************/}
 

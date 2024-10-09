@@ -42,7 +42,7 @@
 //   useEffect(() => {
 //     const fetchDepartments = async () => {
 //       try {
-//         const response = await axios.get('https://highersystem.onrender.com/departments', {
+//         const response = await axios.get('http://43.204.140.118:3001/departments', {
 //           headers: {
 //             Authorization: `Bearer ${localStorage.getItem('token')}`,
 //           },
@@ -115,7 +115,7 @@
 //       return;
 //     }
 //     try {
-//       const response = await axios.post('https://highersystem.onrender.com/signup', {
+//       const response = await axios.post('http://43.204.140.118:3001/signup', {
 //         first_name: formData.first_name,
 //         last_name: formData.last_name,
 //         phone_no: formData.phone_no,
@@ -417,7 +417,7 @@ const Register = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('https://highersystem.onrender.com/departments', {
+        const response = await axios.get('http://43.204.140.118:3001/departments', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -490,8 +490,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await axios.post('https://highersystem.onrender.com/signup', formData);
-
+      const response = await axios.post('http://43.204.140.118:3001/signup', formData);
       if (response.data.message === 'User registered successfully.') {
         setNotification({ message: 'Registration successful.', color: 'green' });
         setTimeout(() => {
