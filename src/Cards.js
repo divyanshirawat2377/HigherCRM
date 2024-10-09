@@ -358,7 +358,7 @@ const CardPage = () => {
             case "CRM": return "Profile"
             case "HRMS": return "HRMS"
             case "ASM": return "Asset Management"
-            case "UCS": return "UCS"
+            case "UCS": return "Unified"
             default: return null
         }
     }

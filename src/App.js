@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 
 import AdminSidebar from "./Sidebar/AdminSidebar";
-import HRMSidebar from './Sidebar/HRMSidebar';
+// import HRMSidebar from './Sidebar/HRMSidebar';
 import UserSidebar from "./Sidebar/UserSidebar";
 import Sidebar from './Sidebar/Sidebar';
 import Designation from "./Designation";
@@ -26,9 +26,14 @@ import Departments from "./Departments";
 import Location from "./Location";
 import Cards from "./Cards";
 import Cards1 from "./Cards1";
+<<<<<<< Updated upstream
 import UCS from "./UCS";
 import HRMS from "./HRMS";
 import Domain from "./Domain";
+=======
+import Unified from "./Unified";
+// import HRMS from "./HRMS";
+>>>>>>> Stashed changes
 import Usermng from "./Usermng";
 import DynamicForm from './DynamicForm';
 import Verify from "./Pages/Verify";
@@ -46,7 +51,7 @@ function App() {
         
         <Route path='/Adminsidebar' element={<AdminSidebar />} />
         <Route path='/UserSidebar' element={<UserSidebar />} />
-        <Route path='/HRMSidebar' element={<HRMSidebar/>}/>
+        {/* <Route path='/HRMSidebar' element={<HRMSidebar/>}/> */}
         <Route path='/Sidebar' element={<Sidebar />} /> 
         <Route path='/Designation' element={<Designation />}/>
         <Route path='/Role' element={<Role />} />
@@ -61,13 +66,17 @@ function App() {
         <Route path='/Departments' element={<Departments />} />
         <Route path='/Location' element={<Location/>} />
         <Route path='/Cards' element={<Cards />} />
-        <Route path='/HRMS' element={<HRMS/>} />
+        {/* <Route path='/HRMS' element={<HRMS/>} /> */}
         <Route path='/Cards1' element={<Cards1 />} />
         <Route path='/Domain' element={<Domain />} />
         <Route path='/Usermng' element={<Usermng />} /> 
         <Route path='/DynamicForm' element={<DynamicForm />} />
+<<<<<<< Updated upstream
         <Route path='/UCS' element={<UCS />} />
         <Route path='/Verify' element={<Verify />} />
+=======
+        <Route path='/Unified' element={<Unified />} />
+>>>>>>> Stashed changes
       </Routes>
     </div>
   );
